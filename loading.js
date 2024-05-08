@@ -8,7 +8,7 @@ const withLoading = (WrappedComponent) => {
     // Simulating data fetching
     setTimeout(() => {
       setLoading(false);
-    }, 1500); // Simulating 2 seconds delay
+    }, 1000); // Simulating 2 seconds delay
 
     return (
       <View style={styles.container}>
