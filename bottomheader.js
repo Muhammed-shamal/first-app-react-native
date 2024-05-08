@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const BottomNavigation = () => {
   const navigation = useNavigation();
+  
 
   return (
     <View style={styles.container}>
@@ -16,11 +17,31 @@ const BottomNavigation = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.iconContainer}
+        onPress={() => navigation.navigate("Categories")}
+      >
+        <AntDesign name="bars" size={24} color="black" />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.navItem, styles.navItemLast]}
+        onPress={() => navigation.navigate("Cart")}
+      >
+        <AntDesign name="shoppingcart" size={21} color="black" />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.navItem, styles.navItemMiddle]}
+        onPress={() => navigation.navigate("wishlist")}
+      >
+        <AntDesign name="hearto" size={21} color="black" />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.iconContainer}
         onPress={() => navigation.navigate("profile")}
       >
         <AntDesign name="user" size={24} color="black" />
       </TouchableOpacity>
-      {/* Add more navigation icons as needed */}
     </View>
   );
 };

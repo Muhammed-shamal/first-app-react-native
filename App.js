@@ -3,16 +3,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProductListScreen from "./productList";
 import ProductDetailsScreen from "./productDetails";
-
-import "react-native-gesture-handler";
-import BottomNavigation from "./bottomheader";
 import NotificationScreen from "./notification";
-import CartScreen from "./cartScreen";
 import WishlistScreen from "./wishList";
-import ProfileScreen from "./profile";
 import { View, Text } from "react-native";
 import LottieView from "lottie-react-native";
 import { CartProvider } from "./Context/cartContext";
+import BottomNav from "./bottomLayout2";
+
 
 const Stack = createStackNavigator();
 
@@ -55,12 +52,10 @@ export default function App() {
             options={{ title: "Product Details" }}
           />
           <Stack.Screen name="Notifications" component={NotificationScreen} />
-          <Stack.Screen name="Cart" component={CartScreen} />
           <Stack.Screen name="wishlist" component={WishlistScreen} />
-          <Stack.Screen name="profile" component={ProfileScreen} />
         </Stack.Navigator>
-        <BottomNavigation />
       </NavigationContainer>
+      <BottomNav />
     </CartProvider>
   );
 }

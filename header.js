@@ -23,18 +23,6 @@ const CustomHeader = ({ navigation }) => {
           >
             <AntDesign name="bells" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.navItem, styles.navItemMiddle]}
-            onPress={() => navigation.navigate("wishlist")}
-          >
-            <AntDesign name="hearto" size={21} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.navItem, styles.navItemLast]}
-            onPress={() => navigation.navigate("Cart")}
-          >
-            <AntDesign name="shoppingcart" size={21} color="black" />
-          </TouchableOpacity>
         </View>
         <View style={styles.searchContainer}>
           <TextInput

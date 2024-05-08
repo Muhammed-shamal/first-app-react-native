@@ -12,11 +12,14 @@ import {
 import { Ionicons, FontAwesome6 } from "@expo/vector-icons";
 import CustomHeader from "./header";
 import CustomToast from "./toast";
+import { useCart } from "./Context/cartContext";
 
 const ProductListScreen = ({ navigation }) => {
   const [toastMessage, setToastMessage] = useState("");
 
   const [products, setProducts] = useState([]);
+
+  const { addToCart, cartItems } = useCart();
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products?limit=10")
@@ -31,10 +34,17 @@ const ProductListScreen = ({ navigation }) => {
   //   ToastAndroid.show("Successfully added to cart", ToastAndroid.SHORT);
   // };
 
-  const addToCart = () => {
-    console.log('click');
-    setToastMessage("Successfully added to cart");
-    // Implement your logic to add the product to the cart here
+  const handleAddToCart = (item) => {
+    // Check if the item already exists in the cart
+    const isAlreadyAdded = cartItems.find((items) => items.id === item.id);
+    //console.log(cartItems.find());
+
+    if (isAlreadyAdded) {
+      setToastMessage("Product is already in the cart");
+    } else {
+      addToCart(item);
+      setToastMessage("Successfully added to cart");
+    }
   };
 
   const renderProductItem = ({ item }) => (
@@ -75,7 +85,10 @@ const ProductListScreen = ({ navigation }) => {
       <Text style={styles.deliveryText}>Delivery by {item.deliveryDate}</Text>
 
       {/* Add to Cart Button */}
-      <TouchableOpacity style={styles.addCartButton} onPress={addToCart}>
+      <TouchableOpacity
+        style={styles.addCartButton}
+        onPress={() => handleAddToCart(item)}
+      >
         <View style={styles.addCartButtonInner}>
           <Ionicons
             name="cart"

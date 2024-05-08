@@ -1,16 +1,17 @@
-// CartScreen.js
-
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useCart } from "./Context/cartContext";
 
 const CartScreen = () => {
-  // Dummy data for cart items
-  const cartItems = [
-    { id: 1, name: "Product 1", price: "$10", quantity: 2 },
-    { id: 2, name: "Product 2", price: "$20", quantity: 1 },
-    { id: 3, name: "Product 3", price: "$15", quantity: 3 },
-  ];
+  const { cartItems } = useCart();
 
   return (
     <View style={styles.container}>
@@ -24,21 +25,23 @@ const CartScreen = () => {
 };
 
 const CartItem = ({ item }) => {
-  const { name, price, quantity } = item;
+  const { title, price, quantity, description, image, category } = item;
 
   return (
     <View style={styles.itemContainer}>
-      <View style={styles.itemInfo}>
-        <Text style={styles.itemName}>{name}</Text>
-        <Text style={styles.itemPrice}>{price}</Text>
-      </View>
-      <View style={styles.quantityContainer}>
-        <Text style={styles.quantity}>{quantity}</Text>
-        <TouchableOpacity style={styles.removeButton}>
-          <Ionicons name="close-circle-outline" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+    <Image source={{ uri: image }} style={styles.itemImage} />
+    <View style={styles.itemInfo}>
+      <Text style={styles.itemName}>{title}</Text>
+      <Text style={styles.itemCategory}>Category: {category}</Text>
+      <Text style={styles.itemPrice}>Price: {price}</Text>
     </View>
+    <View style={styles.quantityContainer}>
+      <Text style={styles.quantity}>{quantity}</Text>
+      <TouchableOpacity style={styles.removeButton}>
+        <Ionicons name="close-circle-outline" size={24} color="black" />
+      </TouchableOpacity>
+    </View>
+  </View>
   );
 };
 
@@ -52,19 +55,40 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#fff",
+    borderColor: "#007bff",
+    borderWidth: 1,
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
   },
+  itemImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+  },
   itemInfo: {
     flex: 1,
+    marginLeft: 10,
   },
   itemName: {
     fontWeight: "bold",
+    fontSize: 16,
     marginBottom: 5,
   },
-  itemPrice: {},
+  itemDescription: {
+    color: "#666",
+    marginBottom: 5,
+  },
+  itemCategory: {
+    color: "#666",
+    marginBottom: 5,
+  },
+  itemPrice: {
+    fontWeight: "bold",
+    color: "black",
+    marginBottom: 5,
+  },
   quantityContainer: {
     flexDirection: "row",
     alignItems: "center",
