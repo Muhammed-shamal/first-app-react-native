@@ -7,6 +7,12 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import {
+  Ionicons,
+  FontAwesome,
+  FontAwesome5,
+  FontAwesome6,
+} from "@expo/vector-icons";
 import CustomHeader from "./header";
 
 const ProductListScreen = ({ navigation }) => {
@@ -26,9 +32,50 @@ const ProductListScreen = ({ navigation }) => {
       style={styles.productCard}
       onPress={() => navigation.navigate("ProductDetails", { product: item })}
     >
+      {/* Favorite Icon */}
+      <TouchableOpacity style={styles.favoriteButton}>
+        <FontAwesome6 name="heart" size={20} color="red" />
+      </TouchableOpacity>
+
+      {/* Product Image */}
       <Image source={{ uri: item.image }} style={styles.productImage} />
-      <Text style={styles.productName}>{item.title}</Text>
-      <Text style={styles.productPrice}>Price: {item.price}</Text>
+
+      {/* Product Name */}
+      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.productName}>
+        {item.title}
+      </Text>
+
+      {/* Product Description */}
+      <Text
+        numberOfLines={2}
+        ellipsizeMode="tail"
+        style={styles.productDescription}
+      >
+        {item.description}
+      </Text>
+
+      {/* Product Price */}
+      <Text style={styles.productPrice}>
+        <Text style={styles.offerText}>Offer: {item.offer}</Text>
+        <Text style={styles.priceText}>Price: </Text>
+        <Text style={styles.boldText}>${item.price}</Text>
+      </Text>
+
+      {/* Delivery Info */}
+      <Text style={styles.deliveryText}>Delivery by {item.deliveryDate}</Text>
+
+      {/* Add to Cart Button */}
+      <TouchableOpacity style={styles.addCartButton}>
+        <View style={styles.addCartButtonInner}>
+          <Ionicons
+            name="cart"
+            size={20}
+            color="#007bff"
+            style={styles.addCart}
+          />
+          <Text style={styles.addCartText}>ADD TO CART</Text>
+        </View>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 
@@ -51,15 +98,16 @@ const ProductListScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#fff",
     padding: 10,
   },
   productList: {
+    marginTop: 5,
     flexGrow: 1,
     paddingVertical: 10,
   },
-
   productCard: {
+    width: "45%",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
@@ -67,6 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   productImage: {
+    marginTop: 20,
     width: "100%",
     height: 150,
     resizeMode: "cover",
@@ -75,10 +124,56 @@ const styles = StyleSheet.create({
   productName: {
     fontWeight: "bold",
     marginTop: 5,
+    fontSize: 16,
+  },
+  productDescription: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 5,
   },
   productPrice: {
-    color: "green",
     marginTop: 5,
+  },
+  boldText: {
+    fontWeight: "bold",
+    color: "black",
+  },
+  offerText: {
+    color: "red",
+    marginRight: 5,
+  },
+  priceText: {
+    color: "black",
+  },
+  deliveryText: {
+    marginTop: 5,
+    color: "#666",
+  },
+
+  addCartButton: {
+    borderWidth: 1,
+    borderColor: "#007bff",
+    borderRadius: 4,
+    marginTop: 8,
+  },
+  addCartButtonInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 8,
+  },
+  addCart: {
+    marginRight: 10,
+  },
+  addCartText: {
+    color: "#007bff",
+    fontSize: 12,
+  },
+
+  favoriteButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });
 
