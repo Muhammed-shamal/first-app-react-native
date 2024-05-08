@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   View,
   Text,
@@ -6,26 +7,35 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ToastAndroid,
 } from "react-native";
-import {
-  Ionicons,
-  FontAwesome,
-  FontAwesome5,
-  FontAwesome6,
-} from "@expo/vector-icons";
+import { Ionicons, FontAwesome6 } from "@expo/vector-icons";
 import CustomHeader from "./header";
+import CustomToast from "./toast";
 
 const ProductListScreen = ({ navigation }) => {
+  const [toastMessage, setToastMessage] = useState("");
+
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products?limit=10")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setProducts(data);
       });
   }, []);
+
+  // const handleAddToCart = () => {
+  //   ToastAndroid.show("Successfully added to cart", ToastAndroid.SHORT);
+  // };
+
+  const addToCart = () => {
+    console.log('click');
+    setToastMessage("Successfully added to cart");
+    // Implement your logic to add the product to the cart here
+  };
 
   const renderProductItem = ({ item }) => (
     <TouchableOpacity
@@ -65,7 +75,7 @@ const ProductListScreen = ({ navigation }) => {
       <Text style={styles.deliveryText}>Delivery by {item.deliveryDate}</Text>
 
       {/* Add to Cart Button */}
-      <TouchableOpacity style={styles.addCartButton}>
+      <TouchableOpacity style={styles.addCartButton} onPress={addToCart}>
         <View style={styles.addCartButtonInner}>
           <Ionicons
             name="cart"
@@ -90,6 +100,7 @@ const ProductListScreen = ({ navigation }) => {
           numColumns={2}
           contentContainerStyle={styles.productList}
         />
+        {toastMessage !== "" && <CustomToast message={toastMessage} />}
       </View>
     </>
   );

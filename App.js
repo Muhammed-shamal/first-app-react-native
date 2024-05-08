@@ -12,6 +12,7 @@ import WishlistScreen from "./wishList";
 import ProfileScreen from "./profile";
 import { View, Text } from "react-native";
 import LottieView from "lottie-react-native";
+import { CartProvider } from "./Context/cartContext";
 
 const Stack = createStackNavigator();
 
@@ -40,16 +41,26 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="ProductList" component={ProductListScreen} options={{ title: "Product List" }} />
-        <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} options={{ title: "Product Details" }} />
-        <Stack.Screen name="Notifications" component={NotificationScreen} />
-        <Stack.Screen name="Cart" component={CartScreen} />
-        <Stack.Screen name="wishlist" component={WishlistScreen} />
-        <Stack.Screen name="profile" component={ProfileScreen} />
-      </Stack.Navigator>
-      <BottomNavigation />
-    </NavigationContainer>
+    <CartProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="ProductList"
+            component={ProductListScreen}
+            options={{ title: "Product List" }}
+          />
+          <Stack.Screen
+            name="ProductDetails"
+            component={ProductDetailsScreen}
+            options={{ title: "Product Details" }}
+          />
+          <Stack.Screen name="Notifications" component={NotificationScreen} />
+          <Stack.Screen name="Cart" component={CartScreen} />
+          <Stack.Screen name="wishlist" component={WishlistScreen} />
+          <Stack.Screen name="profile" component={ProfileScreen} />
+        </Stack.Navigator>
+        <BottomNavigation />
+      </NavigationContainer>
+    </CartProvider>
   );
 }
