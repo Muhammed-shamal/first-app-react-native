@@ -3,17 +3,23 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const BottomNavigation = () => {
+const BottomNavigation = ({ currentRoute }) => {
   const navigation = useNavigation();
-  
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.iconContainer}
-        onPress={() => navigation.navigate("Home")}
+        style={[
+          styles.iconContainer,
+          currentRoute === "ProductList" && styles.activeIconContainer,
+        ]}
+        onPress={() => navigation.navigate("ProductList")}
       >
-        <AntDesign name="home" size={24} color="black" />
+        <AntDesign
+          name="home"
+          size={24}
+          color={currentRoute === "Home" ? "#007bff" : "black"}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.iconContainer}
@@ -58,6 +64,10 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     alignItems: "center",
+  },
+  activeIconContainer: {
+    borderBottomWidth: 2, // Example style for indicating active route
+    borderBottomColor: "#007bff", // Example color for indicating active route
   },
 });
 
