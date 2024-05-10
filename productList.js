@@ -25,7 +25,7 @@ const ProductListScreen = ({ navigation }) => {
     fetch("https://fakestoreapi.com/products?limit=10")
       .then((res) => res.json())
       .then((data) => {
-        //console.log(data);
+        console.log(data);
         setProducts(data);
       });
   }, []);

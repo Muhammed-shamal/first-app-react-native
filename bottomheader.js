@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const BottomNavigation = () => {
+const BottomNavigation = (x) => {
+  console.log(x);
   const navigation = useNavigation();
   
 
