@@ -5,70 +5,65 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import ProductListScreen from "./productList";
-import ProductDetail from "./productDetails";
-import ProfileScreen from "./profile";
+import ProductDetailsScreen from "./productDetails";
+
+import "react-native-gesture-handler";
+import BottomNavigation from "./bottomheader";
+import NotificationScreen from "./notification";
 import CartScreen from "./cartScreen";
+import WishlistScreen from "./wishList";
+import ProfileScreen from "./profile";
+import { View, Text } from "react-native";
+import LottieView from "lottie-react-native";
 import { CartProvider } from "./Context/cartContext";
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 
-const HomeStack = () => (
-  <Stack.Navigator>
-    <Stack.Screen name="ProductList" component={ProductListScreen} />
-    <Stack.Screen name="ProductDetails" component={ProductDetail} />
-  </Stack.Navigator>
-);
+export default function App() {
+  const [loading, setLoading] = useState(true);
 
-// const ProfileStack = () => (
-//   <Stack.Navigator>
-//     <Stack.Screen name="Profile" component={ProfileScreen} />
-//   </Stack.Navigator>
-// );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // Simulating a 2-second loading delay
+    return () => clearTimeout(timer);
+  }, []);
 
-// const SettingsStack = () => (
-//   <Stack.Navigator>
-//     <Stack.Screen name="Settings" component={SettingsScreen} />
-//   </Stack.Navigator>
-// );
-
-const App = () => (
-  <CartProvider>
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={HomeStack}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home" size={size} color={color} />
-            ),
-          }}
+  if (loading) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <LottieView
+          source={require("./assets/Animation2.json")} // Replace with your JSON animation file
+          autoPlay
+          loop
+          style={{ width: 200, height: 200 }}
         />
-        <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{
-            tabBarLabel: "Profile",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="person" size={size} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Cart"
-          component={CartScreen}
-          options={{
-            tabBarLabel: "Cart",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="cart" size={size} color={color} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
-  </CartProvider>
-);
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
-export default App;
+  return (
+    <CartProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="ProductList"
+            component={ProductListScreen}
+            options={{ title: "Product List" }}
+          />
+          <Stack.Screen
+            name="ProductDetails"
+            component={ProductDetailsScreen}
+            options={{ title: "Product Details" }}
+          />
+          <Stack.Screen name="Notifications" component={NotificationScreen} />
+          <Stack.Screen name="Cart" component={CartScreen} />
+          <Stack.Screen name="wishlist" component={WishlistScreen} />
+          <Stack.Screen name="profile" component={ProfileScreen} />
+        </Stack.Navigator>
+        <BottomNavigation />
+      </NavigationContainer>
+    </CartProvider>
+  );
+}
