@@ -1,55 +1,51 @@
-// ProfileScreen.js
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, SectionList } from 'react-native';
+import { useAuth } from './Context/authContext';
 
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+const ProfileScreen = ({ navigation }) => {
+  const { isAuthenticated } = useAuth();
 
-const ProfileScreen = () => {
+  const sections = [
+    {
+      title: 'Profile',
+      data: isAuthenticated ? ['Orders', 'Help Center', 'Wishlist'] : [],
+    },
+    {
+      title: 'More Options',
+      data: ['Scan for coupon', 'FAQs', 'About Us', 'Terms of Use', 'Privacy Policy'],
+    },
+  ];
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.item}>
+      <Text style={styles.title}>{item}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderHeader = ({ section: { title } }) => (
+    <Text style={styles.header}>{title}</Text>
+  );
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Ionicons name="person" size={100} color="#007bff" />
-
-        <Text style={styles.username}>Shamal</Text>
-        <Text style={styles.email}>shamal@gmail.com</Text>
-      </View>
-      <TouchableOpacity style={styles.editButton}>
-        <Ionicons name="pencil-outline" size={24} color="#007bff" />
-        <Text style={styles.editText}>Edit Profile</Text>
-      </TouchableOpacity>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Account</Text>
-        <TouchableOpacity style={styles.sectionItem}>
-          <Ionicons name="mail-outline" size={24} color="#007bff" />
-          <Text style={styles.sectionText}>Change Email</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.sectionItem}>
-          <Ionicons name="key-outline" size={24} color="#007bff" />
-          <Text style={styles.sectionText}>Change Password</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Preferences</Text>
-        <TouchableOpacity style={styles.sectionItem}>
-          <Ionicons name="notifications-outline" size={24} color="#007bff" />
-          <Text style={styles.sectionText}>Notifications</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.sectionItem}>
-          <Ionicons name="color-palette-outline" size={24} color="#007bff" />
-          <Text style={styles.sectionText}>Theme</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.logoutButton}>
-        <View style={styles.logoutButtonInner}>
-          <Ionicons
-            name="log-out-outline"
-            size={24}
-            color="#007bff"
-            style={styles.logoutIcon}
-          />
-          <Text style={styles.logoutText}>Log Out</Text>
+      {!isAuthenticated ? (
+        <View style={styles.notAuthenticatedContainer}>
+          <View style={styles.profileIconContainer}>
+            {/* Replace with your profile icon component */}
+            <Text style={styles.profileIcon}>👤</Text>
+          </View>
+          <TouchableOpacity style={styles.loginButton} onPress={()=>navigation.navigate('Login')}>
+            <Text style={styles.loginButtonText}>LOG IN/SIGN UP</Text>
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+      ) : (
+        <SectionList
+          sections={sections}
+          keyExtractor={(item, index) => item + index}
+          renderItem={renderItem}
+          renderSectionHeader={renderHeader}
+        />
+      )}
     </View>
   );
 };
@@ -57,67 +53,39 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     padding: 20,
   },
-  header: {
-    alignItems: "center",
-    marginBottom: 30,
+  notAuthenticatedContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  username: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginTop: 10,
-  },
-  email: {
-    fontSize: 16,
-    color: "#666",
-    marginTop: 5,
-  },
-  editButton: {
-    flexDirection: "row",
-    alignItems: "center",
+  profileIconContainer: {
     marginBottom: 20,
   },
-  editText: {
-    color: "#007bff",
-    marginLeft: 10,
+  profileIcon: {
+    fontSize: 100,
+    color: 'gray',
   },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  sectionItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  sectionText: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: "#333",
-  },
-  logoutButton: {
-    borderWidth: 1,
-    borderColor: "#007bff",
+  loginButton: {
+    backgroundColor: '#ff3b30',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
   },
-  logoutButtonInner: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 10,
-  },
-  logoutIcon: {
-    marginRight: 10,
-  },
-  logoutText: {
-    color: "#007bff",
+  loginButtonText: {
+    color: 'white',
     fontSize: 16,
+  },
+  header: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 20,
+  },
+  title: {
+    fontSize: 14,
+    color: 'gray',
+    marginBottom: 20,
   },
 });
 

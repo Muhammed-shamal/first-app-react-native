@@ -1,51 +1,82 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator,Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useFavorites } from "./Context/favourContext";
+import LottieView from "lottie-react-native";
 
 const WishlistScreen = () => {
   const [loading, setLoading] = useState(true); // State to manage loading state
-  const [wishlistItems, setWishlistItems] = useState([]);
-
-  // Dummy data for wishlist items
-  const initialWishlistItems = [
-    { id: 1, name: "Product 1", price: "$10" },
-    { id: 2, name: "Product 2", price: "$20" },
-    { id: 3, name: "Product 3", price: "$15" },
-  ];
-
+  const {favorites} = useFavorites()
+ 
   useEffect(() => {
     // Simulate fetching data
     setTimeout(() => {
-      setWishlistItems(initialWishlistItems);
       setLoading(false);
     }, 1500); // Simulating 2 seconds delay
   }, []);
+
 
   return (
     <View style={styles.container}>
       {loading ? ( // Show loading indicator if loading is true
         <ActivityIndicator size="large" color="#007bff" style={styles.loadingIndicator} />
+      ) :  favorites.length === 0 ? (
+        <View style={styles.emptyCartContainer}>
+          <Text style={styles.emptyCartText}>Your wishlist is empty</Text>
+<LottieView
+          source={require("./assets/Animation - 1715938625101.json")} // Replace with your JSON animation file
+          autoPlay
+          loop
+          style={{ width: 300, height: 300 }}
+        />
+        </View>
       ) : (
         <ScrollView>
-          {wishlistItems.map((item) => (
+          {favorites.map((item) => (
             <WishlistItem key={item.id} item={item} />
           ))}
         </ScrollView>
       )}
     </View>
   );
+  
 };
 
 const WishlistItem = ({ item }) => {
-  const { name, price } = item;
+  const { id, title, price, image, category } = item;
+
+  const handleRemove = (proId) => {
+    Alert.alert(
+      "Remove Item",
+      "Are you sure you want to remove your favour?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            if (proId) {
+              removeFromCart(proId);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <View style={styles.itemContainer}>
+       <Image source={{ uri: image }} style={styles.itemImage} />
       <View style={styles.itemInfo}>
-        <Text style={styles.itemName}>{name}</Text>
-        <Text style={styles.itemPrice}>{price}</Text>
+        <Text style={styles.itemName}>{title}</Text>
+        <Text style={styles.itemCategory}>Category: {category}</Text>
+        <Text style={styles.itemPrice}>Price: {price}</Text>
       </View>
-      <TouchableOpacity style={styles.removeButton}>
+      <TouchableOpacity style={styles.removeButton} onPress={()=>handleRemove(id)}>
         <Ionicons name="close-circle-outline" size={24} color="#FF6347" />
       </TouchableOpacity>
     </View>
@@ -82,6 +113,7 @@ const styles = StyleSheet.create({
   },
   itemInfo: {
     flex: 1,
+    marginLeft: 10,
   },
   itemName: {
     fontSize: 18,
@@ -93,8 +125,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#666666",
   },
+  itemImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 4,
+  },
+
   removeButton: {
     marginLeft: 15,
+  },
+
+
+  emptyCartContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyCartImage: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
+  },
+  emptyCartText: {
+    fontWeight:"bold",
+    fontSize: 20,
+    marginTop: 20,
   },
 });
 
