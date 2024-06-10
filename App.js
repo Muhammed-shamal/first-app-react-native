@@ -12,12 +12,37 @@ import ProfileScreen from "./profile";
 import { View, Text } from "react-native";
 import LottieView from "lottie-react-native";
 import { CartProvider } from "./Context/cartContext";
+import { CategoryScreen } from "./category";
+import { FavoritesProvider } from "./Context/favourContext";
+import HomeScreen from "./Home";
+import { AuthProvider } from "./Context/authContext";
+import LoginScreen from "./Authentication/Login";
+
+import firebase from "firebase/compat/app";
+import '@react-native-firebase/app'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator()
 
+
+// Custom Notification Icon Component
+const NotificationIcon = ({ color, size, notificationCount }) => (
+  <View>
+    <Ionicons name="notifications" color={color} size={size} />
+    {notificationCount > 0 && (
+      <Badge
+        value={notificationCount}
+        status="error"
+        containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+      />
+    )}
+  </View>
+);
+
 export default function App() {
   const [loading, setLoading] = React.useState(true);
+  const [notificationCount, setNotificationCount] = React.useState(5); // Example notification count
+
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -29,10 +54,12 @@ export default function App() {
 
   const HomeStack = () => (
     <Stack.Navigator>
-      <Stack.Screen name="ProductList" component={ProductListScreen} />
-      <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+      <Stack.Screen name="HomeMain" component={HomeScreen} />
+      <Stack.Screen name="ProductDetail" component={ProductDetailsScreen} />
+      <Stack.Screen name="Login" component={LoginScreen}/>
     </Stack.Navigator>
   );
+ 
 
   if (loading) {
     return (
@@ -49,12 +76,14 @@ export default function App() {
   }
 
   return (
-    <CartProvider>
-      <NavigationContainer>
+    <AuthProvider>
+      <CartProvider>
+     <FavoritesProvider>
+     <NavigationContainer>
         <Tab.Navigator
-          tabBarOptions={{
-            activeTintColor: "#e91e63",
-            inactiveTintColor: "gray",
+          screenOptions={{
+            tabBarActiveTintColor: "#007bff",
+            tabBarInactiveTintColor: "gray",
           }}
         >
           <Tab.Screen
@@ -68,16 +97,16 @@ export default function App() {
             }}
           />
         
-          <Tab.Screen
-            name="Notifications"
-            component={NotificationScreen}
-            options={{
-              tabBarLabel: "Notifications",
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="notifications" color={color} size={size} />
-              ),
-            }}
-          />
+        <Tab.Screen
+    name="SHOP BY CATEGORY"
+    component={CategoryScreen}
+    options={{
+      tabBarLabel: "Categories",
+      tabBarIcon: ({ color, size }) => (
+        <Ionicons name="bar-chart" color={color} size={size} />
+      ),
+    }}
+  />
           <Tab.Screen
             name="Cart"
             component={CartScreen}
@@ -110,6 +139,8 @@ export default function App() {
           />
         </Tab.Navigator>
       </NavigationContainer>
+     </FavoritesProvider>
     </CartProvider>
+    </AuthProvider>
   );
 }
