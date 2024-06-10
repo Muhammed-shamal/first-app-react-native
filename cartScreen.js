@@ -12,6 +12,7 @@ import { useCart } from "./Context/cartContext";
 
 const CartScreen = () => {
   const { cartItems } = useCart();
+ 
 
   return (
     <View style={styles.container}>
@@ -29,19 +30,19 @@ const CartItem = ({ item }) => {
 
   return (
     <View style={styles.itemContainer}>
-    <Image source={{ uri: image }} style={styles.itemImage} />
-    <View style={styles.itemInfo}>
-      <Text style={styles.itemName}>{title}</Text>
-      <Text style={styles.itemCategory}>Category: {category}</Text>
-      <Text style={styles.itemPrice}>Price: {price}</Text>
+      <Image source={{ uri: image }} style={styles.itemImage} />
+      <View style={styles.itemInfo}>
+        <Text style={styles.itemName}>{title}</Text>
+        <Text style={styles.itemCategory}>Category: {category}</Text>
+        <Text style={styles.itemPrice}>Price: {price}</Text>
+      </View>
+      <View style={styles.quantityContainer}>
+        <Text style={styles.quantity}>{quantity}</Text>
+        <TouchableOpacity style={styles.removeButton}>
+          <Ionicons name="close-circle-outline" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
     </View>
-    <View style={styles.quantityContainer}>
-      <Text style={styles.quantity}>{quantity}</Text>
-      <TouchableOpacity style={styles.removeButton}>
-        <Ionicons name="close-circle-outline" size={24} color="black" />
-      </TouchableOpacity>
-    </View>
-  </View>
   );
 };
 
@@ -74,10 +75,6 @@ const styles = StyleSheet.create({
   itemName: {
     fontWeight: "bold",
     fontSize: 16,
-    marginBottom: 5,
-  },
-  itemDescription: {
-    color: "#666",
     marginBottom: 5,
   },
   itemCategory: {
