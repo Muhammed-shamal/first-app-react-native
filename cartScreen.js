@@ -1,47 +1,31 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { useCart } from "./Context/cartContext";
+import CartItem from "./cartItems";
+
 
 const CartScreen = () => {
   const { cartItems } = useCart();
- 
+
+  console.log(cartItems);
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {cartItems.map((item) => (
-          <CartItem key={item.id} item={item} />
-        ))}
-      </ScrollView>
-    </View>
-  );
-};
-
-const CartItem = ({ item }) => {
-  const { title, price, quantity, description, image, category } = item;
-
-  return (
-    <View style={styles.itemContainer}>
-      <Image source={{ uri: image }} style={styles.itemImage} />
-      <View style={styles.itemInfo}>
-        <Text style={styles.itemName}>{title}</Text>
-        <Text style={styles.itemCategory}>Category: {category}</Text>
-        <Text style={styles.itemPrice}>Price: {price}</Text>
-      </View>
-      <View style={styles.quantityContainer}>
-        <Text style={styles.quantity}>{quantity}</Text>
-        <TouchableOpacity style={styles.removeButton}>
-          <Ionicons name="close-circle-outline" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      {cartItems.length === 0 ? (
+        <View style={styles.emptyCartContainer}>
+          <Image
+            source={require("./assets/empty_cart_image.jpg")} // Replace with your empty cart image
+            style={styles.emptyCartImage}
+          />
+          <Text style={styles.emptyCartText}>Your cart is empty</Text>
+        </View>
+      ) : (
+        <ScrollView>
+          {cartItems.map((item) => (
+            <CartItem key={item.id} item={item} />
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -49,51 +33,22 @@ const CartItem = ({ item }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: "#fff",
   },
-  itemContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderColor: "#007bff",
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 10,
-  },
-  itemImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-  },
-  itemInfo: {
+  emptyCartContainer: {
     flex: 1,
-    marginLeft: 10,
-  },
-  itemName: {
-    fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  itemCategory: {
-    color: "#666",
-    marginBottom: 5,
-  },
-  itemPrice: {
-    fontWeight: "bold",
-    color: "black",
-    marginBottom: 5,
-  },
-  quantityContainer: {
-    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
   },
-  quantity: {
-    marginRight: 10,
+  emptyCartImage: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
   },
-  removeButton: {},
+  emptyCartText: {
+    fontSize: 20,
+    marginTop: 20,
+  },
 });
 
 export default CartScreen;

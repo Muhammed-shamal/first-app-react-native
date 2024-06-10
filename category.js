@@ -1,17 +1,20 @@
-import {useState,useEffect,React} from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+
+import {React,useState,useEffect} from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Image,StyleSheet } from 'react-native';
 
  
 
 const CategoryScreen = ({ navigation }) => {
+
     const [categories, setCategories] = useState([]);
   
     // Manually map category names to images
     const categoryImages = {
-      electronics: require('./images/electronic.jpg'),
-      jewelery: require('./images/jwellery.webp'),
-      "men's clothing": require('./images/mens.jpg'),
-      "women's clothing": require('./images/women.jpg'),
+      electronics: require('./assets/electronic.jpeg'),
+      jewelery: require('./assets/jwellery.webp'),
+      "men's clothing": require('./assets/mens-fasion.jpg'),
+      "women's clothing": require('./assets/womens.jpg'),
+
     };
   
     useEffect(() => {
@@ -43,47 +46,48 @@ const CategoryScreen = ({ navigation }) => {
   };
   
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginVertical: 20,
-    textAlign: 'center',
-  },
-  categoryContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-  },
-  categoryCard: {
-    width: '45%', // Adjust the width to make the cards smaller
-    marginBottom: 20,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 10,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  categoryImage: {
-    width: '100%',
-    height: 150,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    resizeMode: 'cover',
-  },
-  categoryTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    padding: 10,
-    textAlign: 'center',
-  },
-});
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#ffffff',
+    },
+    header: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginVertical: 20,
+      textAlign: 'center',
+    },
+    categoryContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      paddingHorizontal: 10,
+    },
+    categoryCard: {
+      width: '48%',
+      marginBottom: 20,
+      backgroundColor: '#f0f0f0',
+      borderRadius: 10,
+      elevation: 2, // for shadow on Android
+      shadowColor: '#000', // for shadow on iOS
+      shadowOffset: { width: 0, height: 2 }, // for shadow on iOS
+      shadowOpacity: 0.2, // for shadow on iOS
+      shadowRadius: 2, // for shadow on iOS
+    },
+    categoryImage: {
+      width: '100%',
+      height: 150,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      resizeMode: 'cover',
+    },
+    categoryTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      padding: 10,
+      textAlign: 'center',
+    },
+  });
+   
 export default CategoryScreen;
