@@ -1,8 +1,11 @@
+
 import {React,useState,useEffect} from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image,StyleSheet } from 'react-native';
 
+ 
 
-export const CategoryScreen = ({ navigation }) => {
+const CategoryScreen = ({ navigation }) => {
+
     const [categories, setCategories] = useState([]);
   
     // Manually map category names to images
@@ -11,6 +14,7 @@ export const CategoryScreen = ({ navigation }) => {
       jewelery: require('./assets/jwellery.webp'),
       "men's clothing": require('./assets/mens-fasion.jpg'),
       "women's clothing": require('./assets/womens.jpg'),
+
     };
   
     useEffect(() => {
@@ -41,6 +45,7 @@ export const CategoryScreen = ({ navigation }) => {
     );
   };
   
+
 
   const styles = StyleSheet.create({
     container: {
@@ -84,4 +89,5 @@ export const CategoryScreen = ({ navigation }) => {
       textAlign: 'center',
     },
   });
-  
+   
+export default CategoryScreen;
