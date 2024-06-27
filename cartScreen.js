@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { useCart } from "./Context/cartContext";
 import CartItem from "./cartItems";
 
-
 const CartScreen = () => {
   const { cartItems } = useCart();
 
